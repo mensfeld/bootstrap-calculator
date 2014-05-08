@@ -18,6 +18,26 @@ var Calculator = {
   BRO:  '(',
   BRC:  ')',
 
+  get_val_or_placeholder: function(elt) {
+    var val = elt.value;
+    return val == "" ? +elt.placeholder : +elt.value;
+  },
+
+  calc_required_gpa: function() {
+    var currCreds = document.getElementById('currCredsInput');
+    currCreds = this.get_val_or_placeholder(currCreds)
+    var currGpa = document.getElementById('currGpaInput');
+    currGpa = this.get_val_or_placeholder(currGpa)
+    var futureCreds = document.getElementById('futureCredsInput');
+    futureCreds = this.get_val_or_placeholder(futureCreds)
+    var desiredGpa = document.getElementById('desiredGpaInput');
+    desiredGpa = this.get_val_or_placeholder(desiredGpa)
+    var totCreds = currCreds + futureCreds;
+    var reqGpa = (desiredGpa - currCreds/totCreds*currGpa)*totCreds/futureCreds;
+    this.results_value = reqGpa.toPrecision(1 + 4);
+    this.refresh();
+  },
+
   calculate: function() {
     this.history_value.push(this.memory_value);
     this.results_value = this.engine.exec(this.memory_value);
