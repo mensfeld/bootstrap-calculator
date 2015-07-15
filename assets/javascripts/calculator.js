@@ -90,7 +90,7 @@ var Calculator = {
     addSequence: function(txt, fun) {
       var list = txt.split(fun);
       var line = '';
-			
+
       for(var nr in list) {
         if (line != '') {
           line = '(' + line + ')' + fun + '(' + list[nr] + ')';
@@ -104,7 +104,33 @@ var Calculator = {
 }
 
 
+$(document).keypress(function(e) {
+  var element = $('*[data-key="'+e.which+'"]');
+
+  var fun = function(element){
+    // skip if this is no a functional button
+    if (element.length == 0){ return true }
+
+    if (element.data('constant') != undefined){
+      return Calculator.put(Calculator[element.data('constant')]);
+    }
+
+    if (element.data('method') != undefined){
+      return Calculator[element.data('method')]();
+    }
+
+    return Calculator.put(element.html());
+  }
+
+  if (fun(element) != false){
+    return false
+  } else {
+    return true
+  }
+});
+
 $(document).ready(function() {
+
   $(".btn").click(function(e) {
     e.preventDefault();
 
